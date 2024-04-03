@@ -68,6 +68,9 @@ function clear_temp {
   rm '/tmp/flutter.tar.xz' 
   rm '/tmp/cmdline.zip' 
 }
+function installfvm {
+  curl -fsSL https://fvm.app/install.sh | bash
+}
 
 download_flutter
 extract_flutter
@@ -76,3 +79,5 @@ download_android_cmd
 extract_android_cmd
 
 clear_temp
+installfvm
+
