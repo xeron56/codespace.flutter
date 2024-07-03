@@ -64,9 +64,63 @@ function extract_android_cmd {
   chown -R 'vscode:vscode' '/opt/android'
 }
 
+# Function to download Android NDK
+function download_ndk {
+  if [[ -f '/tmp/android-ndk-r26c-linux.zip' ]]; then
+    echo 'Android NDK is already downloaded.'
+    return
+  fi
+
+  ndk_archive='https://dl.google.com/android/repository/android-ndk-r26c-linux.zip'
+  
+  echo 'Downloading Android NDK...'
+  curl "${ndk_archive}" -o '/tmp/android-ndk-r26c-linux.zip'
+}
+
+# Function to extract Android NDK
+function extract_ndk {
+  echo 'Extracting Android NDK...'
+  mkdir -p '/opt/android/ndk/r26c'
+  bsdtar -xf '/tmp/android-ndk-r26c-linux.zip' --strip-components=1 \
+    -C '/opt/android/ndk/r26c'
+  echo 'Change ownership of Android NDK folder...'
+  chown -R 'vscode:vscode' '/opt/android'
+}
+
+#instal utilities
+function install_utilities {
+  echo "Installing utilities..."
+  sudo apt-get update
+  sudo apt-get install -y build-essential libgtk-3-dev ffmpeg libavcodec-dev cmake \
+    ninja-build libavformat-dev libavutil-dev libswscale-dev \
+    libgflags-dev libjpeg-dev libpng-dev libtiff-dev
+
+  # Check if python3 is installed, if not, install it
+  if ! command -v python3 &> /dev/null; then
+    echo "Python3 is not installed. Installing Python3..."
+    sudo apt-get install -y python3 python3-pip
+  else
+    echo "Python3 is already installed."
+  fi
+  sudo apt install python3
+  sudo apt install python3-pip
+  # python3 -m pip config set global.break-system-packages true
+  # echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
+  #/root/.local/lib/python3.8/site-packages
+  # echo 'export PATH="/root/.local/lib/python3.8/site-packages:$PATH""' >> ~/.bashrc
+  # source ~/.bashrc
+
+  pip install conan --user
+
+
+  # Install Conan
+  # python3 -m pip install conan
+}
+
 function clear_temp {
   rm '/tmp/flutter.tar.xz' 
   rm '/tmp/cmdline.zip' 
+  rm '/tmp/android-ndk-r26c-linux.zip'
 }
 function installfvm {
   curl -fsSL https://fvm.app/install.sh | bash
@@ -77,6 +131,10 @@ extract_flutter
 
 download_android_cmd
 extract_android_cmd
+download_ndk
+extract_ndk
+install_utilities
+
 
 clear_temp
 installfvm

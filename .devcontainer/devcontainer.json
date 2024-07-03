@@ -11,6 +11,7 @@
       "upgradePackages": false
     },
     "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/tailscale/codespace/tailscale": {},
     // optional, if you want to be able ssh
     "ghcr.io/devcontainers/features/sshd:1": {
       "version": "latest"
