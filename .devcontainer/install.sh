@@ -116,6 +116,20 @@ function install_utilities {
   # Install Conan
   # python3 -m pip install conan
 }
+#install and setup rust
+function install_rust {
+  # curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+# Source the cargo environment
+source $HOME/.cargo/env
+
+# Verify the installation
+rustc --version
+cargo --version
+}
+
+
 
 function clear_temp {
   rm '/tmp/flutter.tar.xz' 
@@ -134,6 +148,7 @@ extract_android_cmd
 download_ndk
 extract_ndk
 install_utilities
+install_rust
 
 
 clear_temp
