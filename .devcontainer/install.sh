@@ -69,7 +69,7 @@ function clear_temp {
   rm '/tmp/cmdline.zip' 
 }
 function installfvm {
-  curl -fsSL https://fvm.app/install.sh | bash
+ sudo curl -fsSL https://fvm.app/install.sh | bash
 }
 
 download_flutter
